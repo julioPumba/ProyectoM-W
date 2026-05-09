@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultorio Integral | Mendoza & Navas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2a9d8f; /* Verde azulado médico */
+            --secondary: #264653; /* Azul profundo profesional */
+            --accent: #e9c46a; /* Dorado suave para detalles */
+            --bg: #f8f9fa;
+            --text: #333;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--bg);
+        }
+
+        header {
+            background: var(--white);
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo-area h1 {
+            color: var(--secondary);
+            font-size: 1.8rem;
+            letter-spacing: -1px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Sección Hero */
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+        }
+
+        .hero h2 { font-size: 2.2rem; margin-bottom: 1rem; }
+
+        /* Profesionales */
+        .team {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+        .card h3 { color: var(--primary); margin-bottom: 0.5rem; }
+        .card p { font-size: 0.95rem; color: #666; }
+
+        /* Visión y Objetivos */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) { .info-grid { grid-template-columns: 1fr; } }
+
+        .info-box {
+            background: #eef5f4;
+            padding: 1.5rem;
+            border-left: 5px solid var(--primary);
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box h4 { margin-bottom: 0.5rem; color: var(--secondary); }
+
+        /* Botones WhatsApp */
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #25d366;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background 0.3s;
+            width: 100%;
+        }
+
+        .btn-whatsapp:hover { background-color: #128c7e; }
+
+        .specialties {
+            background: var(--secondary);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+        }
+
+        .specialties ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.8rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <h1>Mendoza & Navas</h1>
+            <p>Salud Integral y Bienestar Emocional</p>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <section class="hero">
+            <h2>Tu bienestar es nuestra prioridad</h2>
+            <p>Un espacio profesional dedicado al cuidado de tu salud física y mental.</p>
+        </section>
+
+        <section class="team">
+            <div class="card">
+                <div style="font-size: 3rem;">👩‍⚕️</div>
+                <h3>Lic. Wendy Mendoza</h3>
+                <p>Especialista en atención integral y cuidado clínico. Comprometida con la excelencia médica y el trato humano.</p>
+                <a href="https://wa.me/584241947654?text=Hola%20Lic.%20Wendy%20Mendoza,%20deseo%20solicitar%20una%20consulta" class="btn-whatsapp" target="_blank">Agendar con Lic. Wendy</a>
+            </div>
+
+            <div class="card">
+                <div style="font-size: 3rem;">🧠</div>
+                <h3>Psic. Maury Navas</h3>
+                <p>Especialista en salud mental y procesos cognitivos. Brindando herramientas para tu equilibrio emocional.</p>
+                <a href="https://wa.me/584241947654?text=Hola%20Psic.%20Maury%20Navas,%20deseo%20agendar%20una%20sesión" class="btn-whatsapp" target="_blank">Agendar con Psic. Maury</a>
+            </div>
+        </section>
+
+        <section class="info-grid">
+            <div class="info-box">
+                <h4>Nuestra Visión</h4>
+                <p>Ser el centro de referencia en atención integral, donde la ciencia y la empatía se unen para transformar la calidad de vida de nuestros pacientes.</p>
+            </div>
+            <div class="info-box">
+                <h4>Nuestro Objetivo</h4>
+                <p>Proporcionar diagnósticos precisos y acompañamiento terapéutico efectivo, garantizando un entorno seguro y profesional para cada individuo.</p>
+            </div>
+        </section>
+
+        <section class="specialties">
+            <h3>Nuestras Especialidades</h3>
+            <ul>
+                <li>✅ Evaluación Clínica</li>
+                <li>✅ Psicoterapia de Adultos</li>
+                <li>✅ Control Preventivo</li>
+                <li>✅ Manejo del Estrés y Ansiedad</li>
+                <li>✅ Orientación Familiar</li>
+                <li>✅ Atención Humanizada</li>
+            </ul>
+        </section>
+
+    </div>
+
+    <footer>
+        &copy; 2026 Consultorio Médico Mendoza & Navas. <br>
+        Ubicación: [Tu Dirección Aquí] | Teléfono: 0424-1947654
+    </footer>
+
+</body>
+</html>
