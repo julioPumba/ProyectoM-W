@@ -99,7 +99,7 @@
 
         .btn-whatsapp:hover { background-color: #128c7e; transform: scale(1.02); }
 
-        /* ESTILOS DEL MODAL */
+        /* MODAL */
         .modal {
             display: none; 
             position: fixed; 
@@ -179,13 +179,25 @@
             gap: 15px;
         }
 
+        /* FOOTER ACTUALIZADO: Verde con letras blancas */
         footer {
             text-align: center;
             padding: 3rem 1rem;
             font-size: 0.9rem;
-            color: #666;
-            background: #fff;
-            border-top: 1px solid #eee;
+            color: var(--white);
+            background: var(--primary);
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+        }
+
+        footer strong {
+            font-size: 1.1rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .footer-info {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
         }
     </style>
 </head>
@@ -275,9 +287,11 @@
 
     <footer>
         <strong>Consultorio Médico Mendoza & Navas</strong><br>
-        Ubicación: Guatire - Guarenas - Caracas <br>
-        Teléfono: 0424-1947654 <br><br>
-        &copy; 2026 Todos los derechos reservados.
+        <div class="footer-info">
+            Ubicación: Guatire - Guarenas - Caracas <br>
+            Teléfono: 0424-1947654 <br><br>
+            &copy; 2026 Todos los derechos reservados.
+        </div>
     </footer>
 
     <script>
@@ -290,14 +304,12 @@
             document.getElementById('modalTitle').innerText = "Cita con " + doctor;
             document.getElementById('bookingModal').style.display = "block";
             
-            // Fecha mínima hoy
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('appointmentDate').setAttribute('min', today);
         }
 
         function closeModal() {
             document.getElementById('bookingModal').style.display = "none";
-            // LIMPIEZA DE DATOS AL CERRAR
             document.getElementById('appointmentDate').value = "";
             document.getElementById('firstName').value = "";
             document.getElementById('lastName').value = "";
