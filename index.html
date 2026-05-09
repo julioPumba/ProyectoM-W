@@ -33,7 +33,7 @@
 
         .logo-area h1 {
             color: var(--white);
-            font-size: 2rem;
+            font-size: 2.2rem;
             letter-spacing: -1px;
             margin-bottom: 5px;
         }
@@ -69,14 +69,15 @@
 
         .card {
             background: var(--white);
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             border-top: 4px solid var(--primary);
+            transition: transform 0.3s ease;
         }
 
-        .card h3 { color: var(--secondary); margin-bottom: 0.5rem; }
+        .card:hover { transform: translateY(-5px); }
 
         .btn-whatsapp {
             display: inline-flex;
@@ -134,16 +135,17 @@
             color: #aaa;
         }
 
-        .modal-content h3 { color: var(--secondary); margin-bottom: 1.5rem; }
+        .modal-content h3 { color: var(--secondary); margin-bottom: 1.5rem; text-align: center; }
 
-        .form-group { margin-bottom: 1rem; text-align: left; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
+        .form-group { margin-bottom: 1.2rem; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; color: var(--secondary); }
         .form-group input {
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: 10px;
             font-family: inherit;
+            font-size: 1rem;
         }
 
         .info-grid {
@@ -200,7 +202,7 @@
         
         <section class="hero">
             <h2>Agende su Cita Online</h2>
-            <p>Seleccione al profesional y complete sus datos para una atención inmediata.</p>
+            <p>Complete sus datos para una atención inmediata a través de WhatsApp.</p>
         </section>
 
         <section class="team">
@@ -222,11 +224,11 @@
         <section class="info-grid">
             <div class="info-box">
                 <h4>Nuestra Visión</h4>
-                <p>Transformar la calidad de vida de nuestros pacientes a través de la ciencia y la empatía.</p>
+                <p>Ser el centro de referencia en atención integral, transformando la calidad de vida de nuestros pacientes.</p>
             </div>
             <div class="info-box">
                 <h4>Nuestro Objetivo</h4>
-                <p>Proporcionar diagnósticos precisos en un entorno seguro y profesional.</p>
+                <p>Proporcionar diagnósticos precisos y acompañamiento efectivo en un entorno profesional.</p>
             </div>
         </section>
 
@@ -249,24 +251,24 @@
             <h3 id="modalTitle">Agendar Cita</h3>
             
             <div class="form-group">
-                <label>Seleccione la Fecha:</label>
+                <label>Fecha de la Cita:</label>
                 <input type="date" id="appointmentDate">
             </div>
             <div class="form-group">
                 <label>Nombre:</label>
-                <input type="text" id="firstName" placeholder="Ej: Pepita">
+                <input type="text" id="firstName" placeholder="Nombre completo">
             </div>
             <div class="form-group">
                 <label>Apellido:</label>
-                <input type="text" id="lastName" placeholder="Ej: Pérez">
+                <input type="text" id="lastName" placeholder="Apellidos">
             </div>
             <div class="form-group">
                 <label>Edad:</label>
-                <input type="number" id="age" placeholder="Ej: 28">
+                <input type="number" id="age" placeholder="Edad">
             </div>
 
             <button class="btn-whatsapp" onclick="sendToWhatsApp()">
-                Escribir directo al WhatsApp
+                Confirmar y enviar al WhatsApp
             </button>
         </div>
     </div>
@@ -288,13 +290,18 @@
             document.getElementById('modalTitle').innerText = "Cita con " + doctor;
             document.getElementById('bookingModal').style.display = "block";
             
-            // Establecer fecha mínima como "hoy"
+            // Fecha mínima hoy
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('appointmentDate').setAttribute('min', today);
         }
 
         function closeModal() {
             document.getElementById('bookingModal').style.display = "none";
+            // LIMPIEZA DE DATOS AL CERRAR
+            document.getElementById('appointmentDate').value = "";
+            document.getElementById('firstName').value = "";
+            document.getElementById('lastName').value = "";
+            document.getElementById('age').value = "";
         }
 
         function sendToWhatsApp() {
@@ -304,22 +311,17 @@
             const age = document.getElementById('age').value;
 
             if(!date || !name || !lastName || !age) {
-                alert("Por favor, complete todos los campos para continuar.");
+                alert("Por favor, rellene todos los campos para agendar su cita.");
                 return;
             }
 
-            // Construcción del mensaje
             const message = `Hola, soy ${name} ${lastName}, mi edad es ${age} años. Deseo agendar una cita con ${currentDoctor} para el día ${date}. Tengo la siguiente consulta: `;
-            
-            // Crear link de WhatsApp
             const waLink = `https://wa.me/${currentPhone}?text=${encodeURIComponent(message)}`;
             
-            // Abrir link
             window.open(waLink, '_blank');
             closeModal();
         }
 
-        // Cerrar modal si se hace clic fuera de la caja
         window.onclick = function(event) {
             const modal = document.getElementById('bookingModal');
             if (event.target == modal) {
