@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultorio</title>
+    <title>Mendoza & Navas | Consultorio Integral</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #2a9d8f; /* Verde azulado médico */
-            --secondary: #264653; /* Azul profundo profesional */
-            --accent: #e9c46a; /* Dorado suave para detalles */
+            --primary: #2a9d8f; 
+            --secondary: #264653; 
+            --accent: #e9c46a; 
             --bg: #f8f9fa;
             --text: #333;
             --white: #ffffff;
@@ -24,7 +24,6 @@
             background-color: var(--bg);
         }
 
-        /* HEADER ACTUALIZADO: Ahora con fondo verde y letras blancas */
         header {
             background: var(--primary); 
             padding: 2.5rem 1rem;
@@ -33,14 +32,14 @@
         }
 
         .logo-area h1 {
-            color: var(--white); /* Letras blancas para resaltar */
+            color: var(--white);
             font-size: 2rem;
             letter-spacing: -1px;
             margin-bottom: 5px;
         }
 
         .logo-area p {
-            color: rgba(255, 255, 255, 0.9); /* Subtítulo en blanco suave */
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 300;
             font-size: 1.1rem;
         }
@@ -51,7 +50,6 @@
             padding: 2rem 1.5rem;
         }
 
-        /* Sección Hero */
         .hero {
             text-align: center;
             padding: 3rem 1rem;
@@ -62,9 +60,6 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
-        .hero h2 { font-size: 2.2rem; margin-bottom: 1rem; }
-
-        /* Profesionales */
         .team {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -78,15 +73,79 @@
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
             border-top: 4px solid var(--primary);
         }
 
-        .card:hover { transform: translateY(-5px); }
         .card h3 { color: var(--secondary); margin-bottom: 0.5rem; }
-        .card p { font-size: 0.95rem; color: #666; }
 
-        /* Visión y Objetivos */
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #25d366;
+            color: white;
+            padding: 14px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-whatsapp:hover { background-color: #128c7e; transform: scale(1.02); }
+
+        /* ESTILOS DEL MODAL */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+            position: relative;
+            animation: slideDown 0.4s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px; top: 15px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .modal-content h3 { color: var(--secondary); margin-bottom: 1.5rem; }
+
+        .form-group { margin-bottom: 1rem; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-family: inherit;
+        }
+
         .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -103,30 +162,6 @@
             border-radius: 0 10px 10px 0;
         }
 
-        .info-box h4 { margin-bottom: 0.5rem; color: var(--secondary); }
-
-        /* Botones WhatsApp */
-        .btn-whatsapp {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #25d366;
-            color: white;
-            padding: 14px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 15px;
-            transition: all 0.3s;
-            width: 100%;
-            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
-        }
-
-        .btn-whatsapp:hover { 
-            background-color: #128c7e; 
-            transform: scale(1.02);
-        }
-
         .specialties {
             background: var(--secondary);
             color: white;
@@ -134,8 +169,6 @@
             border-radius: 20px;
             margin-bottom: 3rem;
         }
-
-        .specialties h3 { margin-bottom: 1.5rem; text-align: center; color: var(--accent); }
 
         .specialties ul {
             list-style: none;
@@ -158,7 +191,7 @@
 
     <header>
         <div class="logo-area">
-            <h1>Consultorio</h1>
+            <h1>Mendoza & Navas</h1>
             <p>Salud Integral y Bienestar Emocional</p>
         </div>
     </header>
@@ -166,49 +199,76 @@
     <div class="container">
         
         <section class="hero">
-            <h2>Tu bienestar es nuestra prioridad</h2>
-            <p>Un espacio profesional dedicado al cuidado de tu salud física y mental.</p>
+            <h2>Agende su Cita Online</h2>
+            <p>Seleccione al profesional y complete sus datos para una atención inmediata.</p>
         </section>
 
         <section class="team">
             <div class="card">
                 <div style="font-size: 3.5rem; margin-bottom: 1rem;">👩‍⚕️</div>
                 <h3>Lic. Wendy Mendoza</h3>
-                <p>Especialista en atención integral y cuidado clínico. Comprometida con la excelencia médica y el trato humano.</p>
-                <a href="https://wa.me/584125990595?text=Hola%20Lic.%20Wendy%20Mendoza,%20deseo%20solicitar%20una%20consulta" class="btn-whatsapp" target="_blank">Agendar con Lic. Wendy</a>
+                <p>Especialista en atención integral y cuidado clínico.</p>
+                <button class="btn-whatsapp" onclick="openModal('584125990595', 'Lic. Wendy Mendoza')">Agendar Cita</button>
             </div>
 
             <div class="card">
                 <div style="font-size: 3.5rem; margin-bottom: 1rem;">🧠</div>
                 <h3>Psic. Maury Navas</h3>
-                <p>Especialista en salud mental y procesos cognitivos. Brindando herramientas para tu equilibrio emocional.</p>
-                <a href="https://wa.me/584242665856?text=Hola%20Psic.%20Maury%20Navas,%20deseo%20agendar%20una%20sesión" class="btn-whatsapp" target="_blank">Agendar con Psic. Maury</a>
+                <p>Especialista en salud mental y procesos cognitivos.</p>
+                <button class="btn-whatsapp" onclick="openModal('584242665856', 'Psic. Maury Navas')">Agendar Cita</button>
             </div>
         </section>
 
         <section class="info-grid">
             <div class="info-box">
                 <h4>Nuestra Visión</h4>
-                <p>Ser el centro de referencia en atención integral, donde la ciencia y la empatía se unen para transformar la calidad de vida de nuestros pacientes.</p>
+                <p>Transformar la calidad de vida de nuestros pacientes a través de la ciencia y la empatía.</p>
             </div>
             <div class="info-box">
                 <h4>Nuestro Objetivo</h4>
-                <p>Proporcionar diagnósticos precisos y acompañamiento terapéutico efectivo, garantizando un entorno seguro y profesional para cada individuo.</p>
+                <p>Proporcionar diagnósticos precisos en un entorno seguro y profesional.</p>
             </div>
         </section>
 
         <section class="specialties">
-            <h3>Nuestras Especialidades</h3>
+            <h3 style="text-align: center; color: var(--accent); margin-bottom: 1.5rem;">Nuestras Especialidades</h3>
             <ul>
                 <li>✅ Evaluación Clínica</li>
-                <li>✅ Psicoterapia de Adultos</li>
+                <li>✅ Psicoterapia</li>
                 <li>✅ Control Preventivo</li>
-                <li>✅ Manejo del Estrés y Ansiedad</li>
+                <li>✅ Manejo de Ansiedad</li>
                 <li>✅ Orientación Familiar</li>
                 <li>✅ Atención Humanizada</li>
             </ul>
         </section>
+    </div>
 
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle">Agendar Cita</h3>
+            
+            <div class="form-group">
+                <label>Seleccione la Fecha:</label>
+                <input type="date" id="appointmentDate">
+            </div>
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" id="firstName" placeholder="Ej: Pepita">
+            </div>
+            <div class="form-group">
+                <label>Apellido:</label>
+                <input type="text" id="lastName" placeholder="Ej: Pérez">
+            </div>
+            <div class="form-group">
+                <label>Edad:</label>
+                <input type="number" id="age" placeholder="Ej: 28">
+            </div>
+
+            <button class="btn-whatsapp" onclick="sendToWhatsApp()">
+                Escribir directo al WhatsApp
+            </button>
+        </div>
     </div>
 
     <footer>
@@ -217,6 +277,56 @@
         Teléfono: 0424-1947654 <br><br>
         &copy; 2026 Todos los derechos reservados.
     </footer>
+
+    <script>
+        let currentPhone = "";
+        let currentDoctor = "";
+
+        function openModal(phone, doctor) {
+            currentPhone = phone;
+            currentDoctor = doctor;
+            document.getElementById('modalTitle').innerText = "Cita con " + doctor;
+            document.getElementById('bookingModal').style.display = "block";
+            
+            // Establecer fecha mínima como "hoy"
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('appointmentDate').setAttribute('min', today);
+        }
+
+        function closeModal() {
+            document.getElementById('bookingModal').style.display = "none";
+        }
+
+        function sendToWhatsApp() {
+            const date = document.getElementById('appointmentDate').value;
+            const name = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const age = document.getElementById('age').value;
+
+            if(!date || !name || !lastName || !age) {
+                alert("Por favor, complete todos los campos para continuar.");
+                return;
+            }
+
+            // Construcción del mensaje
+            const message = `Hola, soy ${name} ${lastName}, mi edad es ${age} años. Deseo agendar una cita con ${currentDoctor} para el día ${date}. Tengo la siguiente consulta: `;
+            
+            // Crear link de WhatsApp
+            const waLink = `https://wa.me/${currentPhone}?text=${encodeURIComponent(message)}`;
+            
+            // Abrir link
+            window.open(waLink, '_blank');
+            closeModal();
+        }
+
+        // Cerrar modal si se hace clic fuera de la caja
+        window.onclick = function(event) {
+            const modal = document.getElementById('bookingModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
 
 </body>
 </html>
