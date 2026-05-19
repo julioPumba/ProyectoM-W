@@ -3,344 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultorio Integral</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #2a9d8f; 
-            --secondary: #264653; 
-            --accent: #e9c46a; 
-            --bg: #f8f9fa;
-            --text: #333;
-            --white: #ffffff;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background-color: var(--bg);
-        }
-
-        header {
-            background: var(--primary); 
-            padding: 2.5rem 1rem;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .logo-area h1 {
-            color: var(--white);
-            font-size: 2.2rem;
-            letter-spacing: -1px;
-            margin-bottom: 5px;
-        }
-
-        .logo-area p {
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 300;
-            font-size: 1.1rem;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 3rem 1rem;
-            background: linear-gradient(135deg, var(--secondary), #3a6073);
-            color: white;
-            border-radius: 20px;
-            margin-bottom: 3rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        .team {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .card {
-            background: var(--white);
-            padding: 2.5rem 2rem;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-top: 4px solid var(--primary);
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover { transform: translateY(-5px); }
-
-        .btn-whatsapp {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #25d366;
-            color: white;
-            padding: 14px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 15px;
-            cursor: pointer;
-            border: none;
-            width: 100%;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .btn-whatsapp:hover { background-color: #128c7e; transform: scale(1.02); }
-
-        /* MODAL */
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1000; 
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background-color: var(--white);
-            margin: 10% auto;
-            padding: 2rem;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 450px;
-            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
-            position: relative;
-            animation: slideDown 0.4s ease;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .close-modal {
-            position: absolute;
-            right: 20px; top: 15px;
-            font-size: 28px;
-            cursor: pointer;
-            color: #aaa;
-        }
-
-        .modal-content h3 { color: var(--secondary); margin-bottom: 1.5rem; text-align: center; }
-
-        .form-group { margin-bottom: 1.2rem; text-align: left; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; color: var(--secondary); }
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-family: inherit;
-            font-size: 1rem;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        @media (max-width: 768px) { .info-grid { grid-template-columns: 1fr; } }
-
-        .info-box {
-            background: #eef5f4;
-            padding: 1.5rem;
-            border-left: 5px solid var(--primary);
-            border-radius: 0 10px 10px 0;
-        }
-
-        .specialties {
-            background: var(--secondary);
-            color: white;
-            padding: 2.5rem;
-            border-radius: 20px;
-            margin-bottom: 3rem;
-        }
-
-        .specialties ul {
-            list-style: none;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        /* FOOTER ACTUALIZADO: Verde con letras blancas */
-        footer {
-            text-align: center;
-            padding: 3rem 1rem;
-            font-size: 0.9rem;
-            color: var(--white);
-            background: var(--primary);
-            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
-        }
-
-        footer strong {
-            font-size: 1.1rem;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-
-        .footer-info {
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 300;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <div class="logo-area">
-            <h1>Consultorio</h1>
-            <p>Salud Integral y Bienestar Emocional</p>
-        </div>
-    </header>
-
-    <div class="container">
-        
-        <section class="hero">
-            <h2>Agende su Cita Online</h2>
-            <p>Complete sus datos para una atención inmediata a través de WhatsApp.</p>
-        </section>
-
-        <section class="team">
-            <div class="card">
-                <div style="font-size: 3.5rem; margin-bottom: 1rem;">👩‍⚕️</div>
-                <h3>Lic. Wendy Mendoza</h3>
-                <p>Especialista en atención integral y cuidado clínico.</p>
-                <button class="btn-whatsapp" onclick="openModal('584125990595', 'Lic. Wendy Mendoza')">Agendar Cita</button>
-            </div>
-
-            <div class="card">
-                <div style="font-size: 3.5rem; margin-bottom: 1rem;">🧠</div>
-                <h3>Psic. Maury Navas</h3>
-                <p>Especialista en salud mental y procesos cognitivos.</p>
-                <button class="btn-whatsapp" onclick="openModal('584242665856', 'Psic. Maury Navas')">Agendar Cita</button>
-            </div>
-        </section>
-
-        <section class="info-grid">
-            <div class="info-box">
-                <h4>Nuestra Visión</h4>
-                <p>Ser el centro de referencia en atención integral, transformando la calidad de vida de nuestros pacientes.</p>
-            </div>
-            <div class="info-box">
-                <h4>Nuestro Objetivo</h4>
-                <p>Proporcionar diagnósticos precisos y acompañamiento efectivo en un entorno profesional.</p>
-            </div>
-        </section>
-
-        <section class="specialties">
-            <h3 style="text-align: center; color: var(--accent); margin-bottom: 1.5rem;">Nuestras Especialidades</h3>
-            <ul>
-                <li>✅ Evaluación Clínica</li>
-                <li>✅ Psicoterapia</li>
-                <li>✅ Control Preventivo</li>
-                <li>✅ Manejo de Ansiedad</li>
-                <li>✅ Orientación Familiar</li>
-                <li>✅ Atención Humanizada</li>
-            </ul>
-        </section>
-    </div>
-
-    <div id="bookingModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
-            <h3 id="modalTitle">Agendar Cita</h3>
-            
-            <div class="form-group">
-                <label>Fecha de la Cita:</label>
-                <input type="date" id="appointmentDate">
-            </div>
-            <div class="form-group">
-                <label>Nombre:</label>
-                <input type="text" id="firstName">
-            </div>
-            <div class="form-group">
-                <label>Apellido:</label>
-                <input type="text" id="lastName">
-            </div>
-            <div class="form-group">
-                <label>Edad:</label>
-                <input type="number" id="age">
-            </div>
-
-            <button class="btn-whatsapp" onclick="sendToWhatsApp()">
-                Confirmar y enviar al WhatsApp
-            </button>
-        </div>
-    </div>
-
-    <footer>
-        <strong>Consultorio Médico Mendoza & Navas</strong><br>
-        <div class="footer-info">
-            Ubicación: Guatire - Guarenas - Caracas <br>
-            Teléfono: 0424-1947654 <br><br>
-            &copy; 2026 Todos los derechos reservados.
-        </div>
-    </footer>
-
+    <title>Organización Élite - Comunidad Fiat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        let currentPhone = "";
-        let currentDoctor = "";
-
-        function openModal(phone, doctor) {
-            currentPhone = phone;
-            currentDoctor = doctor;
-            document.getElementById('modalTitle').innerText = "Cita con " + doctor;
-            document.getElementById('bookingModal').style.display = "block";
-            
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('appointmentDate').setAttribute('min', today);
-        }
-
-        function closeModal() {
-            document.getElementById('bookingModal').style.display = "none";
-            document.getElementById('appointmentDate').value = "";
-            document.getElementById('firstName').value = "";
-            document.getElementById('lastName').value = "";
-            document.getElementById('age').value = "";
-        }
-
-        function sendToWhatsApp() {
-            const date = document.getElementById('appointmentDate').value;
-            const name = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const age = document.getElementById('age').value;
-
-            if(!date || !name || !lastName || !age) {
-                alert("Por favor, rellene todos los campos para agendar su cita.");
-                return;
-            }
-
-            const message = `Hola, soy ${name} ${lastName}, mi edad es ${age} años. Deseo agendar una cita con ${currentDoctor} para el día ${date}. Tengo la siguiente consulta: `;
-            const waLink = `https://wa.me/${currentPhone}?text=${encodeURIComponent(message)}`;
-            
-            window.open(waLink, '_blank');
-            closeModal();
-        }
-
-        window.onclick = function(event) {
-            const modal = document.getElementById('bookingModal');
-            if (event.target == modal) {
-                closeModal();
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        fiatRed: '#990000',
+                        darkElite: '#111111',
+                    },
+                    // Añadimos una animación suave para el desvanecimiento del banner
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-in-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        }
+                    }
+                }
             }
         }
     </script>
+    <style>
+        /* Estilo necesario para superponer las imágenes del banner */
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+        .slide.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-darkElite text-gray-100 font-sans antialiased selection:bg-fiatRed selection:text-white overflow-x-hidden">
 
+    <header class="border-b border-gray-800 bg-black/70 backdrop-blur-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl font-black tracking-widest text-white">ÉLITE<span class="text-fiatRed">.</span></span>
+            </div>
+            <button onclick="toggleModal()" class="bg-fiatRed hover:bg-red-700 text-white font-bold py-2.5 px-6 rounded-full transition duration-300 transform hover:scale-105 shadow-lg shadow-red-900/40 cursor-pointer">
+                Únete al Team 🫂
+            </button>
+        </div>
+    </header>
+
+    <section class="relative flex items-center justify-center min-h-[75vh] md:min-h-[85vh] overflow-hidden px-4 text-center">
+        
+        <div id="slideshow-container" class="absolute inset-0 z-0">
+            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1541811634833-28da5e65d836?q=80&w=1920&auto=format&fit=crop');">
+                <div class="absolute inset-0 bg-black/70"></div> </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=1920&auto=format&fit=crop');">
+                <div class="absolute inset-0 bg-black/70"></div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1521412030256-4b953d607e4d?q=80&w=1920&auto=format&fit=crop');">
+                <div class="absolute inset-0 bg-black/70"></div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1920&auto=format&fit=crop');">
+                <div class="absolute inset-0 bg-black/70"></div>
+            </div>
+            </div>
+
+        <div class="relative z-10 max-w-3xl mx-auto space-y-6 animate-fade-in">
+            <span class="text-fiatRed font-bold tracking-widest text-sm uppercase bg-black/50 px-3 py-1 rounded-full inline-block">Comunidad Exclusiva</span>
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                Bienvenidos a la <br><span class="bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-fiatRed">Organización Élite</span>
+            </h1>
+            <p class="text-xl sm:text-2xl text-gray-200 font-light italic max-w-2xl mx-auto bg-black/30 p-4 rounded-xl backdrop-blur-sm">
+                "Entusiastas de la pasión automotriz Fiat, somos una minoría selecta y cualitativa…"
+            </p>
+            <div class="pt-4">
+                <button onclick="toggleModal()" class="bg-fiatRed hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105 cursor-pointer shadow-2xl">
+                    Quiero Registrarme
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-gray-900 bg-black">
+        <div class="grid md:grid-cols-2 gap-12">
+            <div class="bg-zinc-900/30 p-8 rounded-2xl border border-gray-800 hover:border-fiatRed/50 transition duration-500">
+                <div class="w-12 h-12 bg-fiatRed/10 text-fiatRed rounded-xl flex items-center justify-center mb-6 text-2xl">👁️</div>
+                <h3 class="text-2xl font-bold text-white mb-4">Nuestra Visión</h3>
+                <p class="text-gray-400 leading-relaxed text-lg">
+                    Consolidarnos como el pilar y refugio de los verdaderos apasionados de Fiat. No buscamos ser una multitud ruidosa; nuestro norte es mantener la esencia, el respeto y el conocimiento técnico que define a los entusiastas de corazón.
+                </p>
+            </div>
+
+            <div class="bg-zinc-900/30 p-8 rounded-2xl border border-gray-800 hover:border-fiatRed/50 transition duration-500">
+                <div class="w-12 h-12 bg-fiatRed/10 text-fiatRed rounded-xl flex items-center justify-center mb-6 text-2xl">🎯</div>
+                <h3 class="text-2xl font-bold text-white mb-4">Nuestra Meta</h3>
+                <p class="text-gray-400 leading-relaxed text-lg">
+                    Unir y conectar de manera cualitativa a los propietarios de la marca. Buscamos crear un espacio selecto donde compartir proyectos, restauraciones, eventos y el orgullo de pertenecer a una hermandad que entiende el verdadero valor automotriz.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-gray-900 bg-black py-10 text-center text-sm text-gray-600">
+        <p>&copy; 2026 Organización Élite. Hecho por y para entusiastas de Fiat.</p>
+    </footer>
+
+    <div id="registerModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div class="bg-zinc-950 border border-gray-800 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
+            <div class="bg-gradient-to-r from-fiatRed to-red-900 p-6 text-white relative">
+                <h3 class="text-2xl font-black tracking-wide">REGISTRO</h3>
+                <p class="text-red-100 text-sm mt-1">Si quieres unirte al team por favor completa el registro.</p>
+                <button onclick="toggleModal()" class="absolute top-4 right-4 text-white/70 hover:text-white text-2xl font-bold cursor-pointer">&times;</button>
+            </div>
+
+            <form id="eliteForm" onsubmit="handleSubmit(event)" class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Nombre</label>
+                        <input type="text" required class="w-full bg-zinc-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-fiatRed transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Apellido</label>
+                        <input type="text" required class="w-full bg-zinc-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-fiatRed transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Cédula</label>
+                    <input type="text" required class="w-full bg-zinc-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-fiatRed transition" placeholder="V-12345678">
+                </div>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Modelo del Carro</label>
+                        <input type="text" required placeholder="Ej. Fiat Uno" class="w-full bg-zinc-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-fiatRed transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Año</label>
+                        <input type="number" required min="1900" max="2026" placeholder="2008" class="w-full bg-zinc-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-fiatRed transition">
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-fiatRed hover:bg-red-700 text-white font-bold py-3.5 rounded-lg transition duration-300 shadow-lg shadow-red-950 cursor-pointer text-lg">
+                        Enviar Registro 🏎️
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // --- Lógica del BANNER DINÁMICO ---
+        const slides = document.querySelectorAll('.slide');
+        let currentSlideIdx = 0;
+        const slideInterval = 5000; // Tiempo entre cambios (5 segundos)
+
+        function nextSlide() {
+            // Quitar clase activa a la imagen actual
+            slides[currentSlideIdx].classList.remove('active');
+            
+            // Calcular índice de la siguiente imagen
+            currentSlideIdx = (currentSlideIdx + 1) % slides.length;
+            
+            // Añadir clase activa a la nueva imagen
+            slides[currentSlideIdx].classList.add('active');
+        }
+
+        // Iniciar el cambio automático
+        setInterval(nextSlide, slideInterval);
+
+
+        // --- Lógica del MODAL ---
+        const modal = document.getElementById('registerModal');
+        const modalContent = modal.querySelector('div');
+
+        function toggleModal() {
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95');
+                }, 10);
+            } else {
+                modal.classList.add('opacity-0');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.remove('flex');
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) toggleModal();
+        });
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert('¡Registro enviado con éxito al Team Élite! Bienvenidos a la minoría selecta.');
+            document.getElementById('eliteForm').reset();
+            toggleModal();
+        }
+    </script>
 </body>
 </html>
