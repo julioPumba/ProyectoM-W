@@ -465,7 +465,10 @@ function viewForm(pro, doc){
 
   $("#btnDownload").onclick = () => {
     if(!validate()) return; const r = make(); if(!r) return;
-    r.pdf.save(r.filename); toast("PDF descargado.");
+    r.pdf.save(r.filename);
+    // Después de descargar: borrar el borrador y dejar el formulario vacío
+    clearTimeout(t); store.del(draftKey);
+    setTimeout(()=>{ viewForm(pro, doc); window.scrollTo(0,0); toast("PDF descargado. El formulario quedó vacío para el siguiente paciente."); }, 300);
   };
   $("#btnPreview").onclick = () => {
     if(!validate()) return; const r = make(); if(!r) return;
