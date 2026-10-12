@@ -1,212 +1,683 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organización Élite - Comunidad Fiat</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        fiatRed: '#990000',
-                        darkElite: '#111111',
-                    },
-                    // Añadimos una animación suave para el desvanecimiento del banner
-                    animation: {
-                        'fade-in': 'fadeIn 1s ease-in-out forwards',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        /* Estilo necesario para superponer las imágenes del banner */
-        .slide {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            background-size: cover;
-            background-position: center;
-        }
-        .slide.active {
-            opacity: 1;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documentos clínicos · Maury Navas y Wendy Mendoza</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#E9EEEC; --paper:#FFFFFF; --ink:#1E2A2B; --muted:#5B6B6A; --line:#CFD8D5;
+    --maury:#24566B; --maury-soft:#DCE8EC;
+    --wendy:#7A3B5C; --wendy-soft:#F0E1E8;
+    --accent:var(--ink); --accent-soft:#E3E8E6;
+    --serif:"Spectral", Georgia, "Times New Roman", serif;
+    --sans:"Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  body[data-pro="maury"]{ --accent:var(--maury); --accent-soft:var(--maury-soft); }
+  body[data-pro="wendy"]{ --accent:var(--wendy); --accent-soft:var(--wendy-soft); }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; }
+  body{ font-family:var(--sans); color:var(--ink); background:var(--bg); font-size:16px; line-height:1.5; min-height:100vh; }
+  a{ color:inherit; }
+  button,input,select,textarea{ font:inherit; color:inherit; }
+  :focus-visible{ outline:3px solid var(--accent); outline-offset:2px; }
+
+  /* ---------- Inicio: dos mitades ---------- */
+  .split{ display:grid; grid-template-columns:1fr 1fr; min-height:100vh; }
+  .half{ position:relative; display:flex; flex-direction:column; justify-content:flex-end; padding:clamp(28px,5vw,64px);
+         text-decoration:none; color:#fff; overflow:hidden; transition:filter .2s; }
+  .half.maury{ background:var(--maury); }
+  .half.wendy{ background:var(--wendy); }
+  .half:hover{ filter:brightness(1.08); }
+  .half .role{ font-size:1.05rem; opacity:.85; margin:0 0 .4rem; }
+  .half .name{ font-family:var(--serif); font-weight:400; font-size:clamp(3rem,7.5vw,6.5rem); line-height:.95; margin:0; letter-spacing:-.02em; }
+  .half .go{ margin-top:2rem; display:inline-flex; align-items:center; gap:.6rem; font-weight:600; border-top:1px solid rgba(255,255,255,.4); padding-top:1rem; }
+  .half .mono{ position:absolute; top:clamp(20px,4vw,48px); right:clamp(20px,4vw,48px); font-family:var(--serif); font-style:italic; font-size:clamp(5rem,14vw,12rem); line-height:1; opacity:.12; }
+  .intro{ position:absolute; top:clamp(24px,4vw,48px); left:50%; transform:translateX(-50%); z-index:2; background:var(--paper);
+          color:var(--ink); padding:.55rem 1.1rem; border-radius:999px; font-size:.92rem; box-shadow:0 2px 10px rgba(0,0,0,.15); white-space:nowrap; }
+  @media (max-width:720px){ .split{ grid-template-columns:1fr; } .half{ min-height:50vh; } .intro{ white-space:normal; text-align:center; width:max-content; max-width:86vw; } }
+
+  /* ---------- Barra superior ---------- */
+  .top{ background:var(--accent); color:#fff; }
+  .top-in{ max-width:960px; margin:0 auto; padding:1rem 1.25rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+  .top a.back{ text-decoration:none; opacity:.9; font-size:.95rem; }
+  .top a.back:hover{ opacity:1; text-decoration:underline; }
+  .who{ font-family:var(--serif); font-size:1.15rem; }
+
+  .wrap{ max-width:960px; margin:0 auto; padding:2.5rem 1.25rem 7rem; }
+  h1.page{ font-family:var(--serif); font-weight:400; font-size:clamp(2rem,4.5vw,2.9rem); line-height:1.1; margin:0 0 .5rem; }
+  .lead{ color:var(--muted); max-width:60ch; margin:0 0 2rem; }
+
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.5rem; border:1px solid var(--accent); background:var(--accent); color:#fff;
+        padding:.65rem 1.15rem; border-radius:8px; font-weight:600; cursor:pointer; text-decoration:none; }
+  .btn:hover{ filter:brightness(1.1); }
+  .btn.ghost{ background:transparent; color:var(--accent); }
+  .btn.ghost:hover{ background:var(--accent-soft); filter:none; }
+  .btn.light{ background:transparent; color:#fff; border-color:rgba(255,255,255,.55); }
+  .btn.light:hover{ background:rgba(255,255,255,.12); }
+  .btn.plain{ background:transparent; border-color:transparent; color:var(--muted); }
+  .btn.plain:hover{ color:var(--ink); text-decoration:underline; }
+
+  /* ---------- Índice de documentos ---------- */
+  .doclist{ list-style:none; margin:0; padding:0; background:var(--paper); border:1px solid var(--line); border-radius:12px; }
+  .doclist li + li{ border-top:1px solid var(--line); }
+  .docrow{ display:grid; grid-template-columns:56px 1fr auto; align-items:center; gap:1.25rem; padding:1.4rem 1.5rem; text-decoration:none; }
+  .docrow:hover{ background:var(--accent-soft); }
+  .docrow:hover .btn{ filter:brightness(1.1); }
+  .docicon{ width:56px; height:56px; border-radius:10px; background:var(--accent-soft); color:var(--accent); display:grid; place-items:center; }
+  .docrow h2{ font-family:var(--serif); font-weight:600; font-size:1.3rem; margin:0 0 .2rem; }
+  .docrow p{ margin:0; color:var(--muted); font-size:.95rem; }
+  @media (max-width:600px){ .docrow{ grid-template-columns:44px 1fr; } .docicon{ width:44px; height:44px; } .docrow .btn{ grid-column:1/-1; } }
+  .profilenote{ margin-top:1.5rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap; color:var(--muted); font-size:.95rem; }
+
+  /* ---------- Formulario (hoja) ---------- */
+  .sheet{ background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:clamp(1.25rem,4vw,2.5rem); }
+  .sheet + .sheet{ margin-top:1.25rem; }
+  .sheet h2{ font-family:var(--serif); font-weight:600; font-size:1.35rem; margin:0 0 1.25rem; padding-bottom:.6rem; border-bottom:2px solid var(--accent-soft); }
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:1rem 1.25rem; }
+  .full{ grid-column:1/-1; }
+  @media (max-width:640px){ .grid{ grid-template-columns:1fr; } }
+  .field label{ display:block; font-weight:500; font-size:.92rem; margin-bottom:.3rem; }
+  .field .req{ color:var(--accent); }
+  .field small{ display:block; color:var(--muted); font-size:.82rem; margin-top:.25rem; }
+  input[type=text],input[type=date],input[type=number],input[type=email],select,textarea{
+    width:100%; border:1px solid var(--line); border-radius:8px; padding:.6rem .75rem; background:#FBFCFC; }
+  input:focus,select:focus,textarea:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); background:#fff; }
+  textarea{ resize:vertical; min-height:96px; line-height:1.5; }
+  .invalid{ border-color:#B3261E !important; box-shadow:0 0 0 3px #F6D6D3 !important; }
+
+  .actions{ position:fixed; left:0; right:0; bottom:0; background:rgba(255,255,255,.96); border-top:1px solid var(--line); backdrop-filter:blur(6px); z-index:5; }
+  .actions-in{ max-width:960px; margin:0 auto; padding:.8rem 1.25rem; display:flex; gap:.75rem; align-items:center; flex-wrap:wrap; }
+  .actions .saved{ color:var(--muted); font-size:.85rem; margin-right:auto; }
+
+  /* ---------- Diálogo de perfil ---------- */
+  dialog{ border:none; border-radius:14px; padding:0; width:min(680px,94vw); max-height:92vh; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+  dialog::backdrop{ background:rgba(20,30,30,.45); }
+  .dlg-h{ padding:1.4rem 1.6rem .4rem; }
+  .dlg-h h2{ font-family:var(--serif); font-weight:600; margin:0 0 .2rem; font-size:1.5rem; }
+  .dlg-h p{ margin:0; color:var(--muted); font-size:.92rem; }
+  .dlg-b{ padding:1.2rem 1.6rem; }
+  .dlg-f{ padding:1rem 1.6rem 1.4rem; display:flex; justify-content:flex-end; gap:.75rem; border-top:1px solid var(--line); }
+  .imgpick{ border:1px dashed var(--line); border-radius:10px; padding:.8rem; display:flex; gap:.8rem; align-items:center; }
+  .imgpick .prev{ width:110px; height:60px; border-radius:6px; background:#F3F5F4; display:grid; place-items:center; color:var(--muted); font-size:.8rem; overflow:hidden; flex:none; }
+  .imgpick .prev img{ max-width:100%; max-height:100%; }
+  .imgpick .ctrl{ display:flex; flex-direction:column; gap:.35rem; align-items:flex-start; font-size:.88rem; }
+  .linkbtn{ background:none; border:none; padding:0; color:var(--accent); text-decoration:underline; cursor:pointer; font-size:.88rem; }
+
+  #toast{ position:fixed; left:50%; bottom:90px; transform:translateX(-50%) translateY(20px); background:var(--ink); color:#fff; padding:.7rem 1.1rem;
+          border-radius:8px; opacity:0; pointer-events:none; transition:.25s; z-index:50; font-size:.95rem; max-width:90vw; }
+  #toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+  @media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }
+</style>
 </head>
-<body class="bg-darkElite text-gray-100 font-sans antialiased selection:bg-fiatRed selection:text-white overflow-x-hidden">
+<body>
+<main id="app"></main>
 
-    <header class="border-b border-gray-800 bg-black/70 backdrop-blur-md sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <span class="text-2xl font-black tracking-widest text-white">ÉLITE<span class="text-fiatRed">.</span></span>
-            </div>
-            <button onclick="toggleModal()" class="bg-fiatRed hover:bg-red-700 text-white font-bold py-2.5 px-6 rounded-full transition duration-300 transform hover:scale-105 shadow-lg shadow-red-900/40 cursor-pointer">
-                Únete al Team 🫂
-            </button>
-        </div>
-    </header>
-
-    <section class="relative flex items-center justify-center min-h-[75vh] md:min-h-[85vh] overflow-hidden px-4 text-center">
-        
-        <div id="slideshow-container" class="absolute inset-0 z-0">
-            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1541811634833-28da5e65d836?q=80&w=1920&auto=format&fit=crop');">
-                <div class="absolute inset-0 bg-black/70"></div> </div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=1920&auto=format&fit=crop');">
-                <div class="absolute inset-0 bg-black/70"></div>
-            </div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1521412030256-4b953d607e4d?q=80&w=1920&auto=format&fit=crop');">
-                <div class="absolute inset-0 bg-black/70"></div>
-            </div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1920&auto=format&fit=crop');">
-                <div class="absolute inset-0 bg-black/70"></div>
-            </div>
-            </div>
-
-        <div class="relative z-10 max-w-3xl mx-auto space-y-6 animate-fade-in">
-            <span class="text-fiatRed font-bold tracking-widest text-sm uppercase bg-black/50 px-3 py-1 rounded-full inline-block">Comunidad Exclusiva</span>
-            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
-                Bienvenidos a la <br><span class="bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-fiatRed">Organización Élite</span>
-            </h1>
-            <p class="text-xl sm:text-2xl text-gray-200 font-light italic max-w-2xl mx-auto bg-black/30 p-4 rounded-xl backdrop-blur-sm">
-                "Entusiastas de la pasión automotriz Fiat, somos una minoría selecta y cualitativa…"
-            </p>
-            <div class="pt-4">
-                <button onclick="toggleModal()" class="bg-fiatRed hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105 cursor-pointer shadow-2xl">
-                    Quiero Registrarme
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-gray-900 bg-black">
-        <div class="grid md:grid-cols-2 gap-12">
-            <div class="bg-zinc-900/30 p-8 rounded-2xl border border-gray-800 hover:border-fiatRed/50 transition duration-500">
-                <div class="w-12 h-12 bg-fiatRed/10 text-fiatRed rounded-xl flex items-center justify-center mb-6 text-2xl">👁️</div>
-                <h3 class="text-2xl font-bold text-white mb-4">Nuestra Visión</h3>
-                <p class="text-gray-400 leading-relaxed text-lg">
-                    Consolidarnos como el pilar y refugio de los verdaderos apasionados de Fiat. No buscamos ser una multitud ruidosa; nuestro norte es mantener la esencia, el respeto y el conocimiento técnico que define a los entusiastas de corazón.
-                </p>
-            </div>
-
-            <div class="bg-zinc-900/30 p-8 rounded-2xl border border-gray-800 hover:border-fiatRed/50 transition duration-500">
-                <div class="w-12 h-12 bg-fiatRed/10 text-fiatRed rounded-xl flex items-center justify-center mb-6 text-2xl">🎯</div>
-                <h3 class="text-2xl font-bold text-white mb-4">Nuestra Meta</h3>
-                <p class="text-gray-400 leading-relaxed text-lg">
-                    Unir y conectar de manera cualitativa a los propietarios de la marca. Buscamos crear un espacio selecto donde compartir proyectos, restauraciones, eventos y el orgullo de pertenecer a una hermandad que entiende el verdadero valor automotriz.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <footer class="border-t border-gray-900 bg-black py-10 text-center text-sm text-gray-600">
-        <p>&copy; 2026 Organización Élite. Hecho por y para entusiastas de Fiat.</p>
-    </footer>
-
-    <div id="registerModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm transition-opacity duration-300 opacity-0">
-        <div class="bg-zinc-950 border border-gray-800 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
-            <div class="bg-gradient-to-r from-fiatRed to-red-900 p-6 text-white relative">
-                <h3 class="text-2xl font-black tracking-wide">REGISTRO</h3>
-                <p class="text-red-100 text-sm mt-1">Si quieres unirte al team por favor completa el registro.</p>
-                <button onclick="toggleModal()" class="absolute top-4 right-4 text-white/70 hover:text-white text-2xl font-bold cursor-pointer">&times;</button>
-            </div>
-
-            <form id="eliteForm" onsubmit="handleSubmit(event)" class="p-6 space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Nombre</label>
-                        <input type="text" required class="w-full bg-zinc-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-fiatRed transition">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Apellido</label>
-                        <input type="text" required class="w-full bg-zinc-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-fiatRed transition">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Cédula</label>
-                    <input type="text" required class="w-full bg-zinc-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-fiatRed transition" placeholder="V-12345678">
-                </div>
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="col-span-2">
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Modelo del Carro</label>
-                        <input type="text" required placeholder="Ej. Fiat Uno" class="w-full bg-zinc-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-fiatRed transition">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Año</label>
-                        <input type="number" required min="1900" max="2026" placeholder="2008" class="w-full bg-zinc-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-fiatRed transition">
-                    </div>
-                </div>
-
-                <div class="pt-4">
-                    <button type="submit" class="w-full bg-fiatRed hover:bg-red-700 text-white font-bold py-3.5 rounded-lg transition duration-300 shadow-lg shadow-red-950 cursor-pointer text-lg">
-                        Enviar Registro 🏎️
-                    </button>
-                </div>
-            </form>
-        </div>
+<dialog id="profileDlg">
+  <form method="dialog" id="profileForm">
+    <div class="dlg-h">
+      <h2>Datos profesionales</h2>
+      <p>Aparecen en el encabezado y la firma de cada PDF. Se guardan en este navegador.</p>
     </div>
+    <div class="dlg-b">
+      <div class="grid" id="profileFields"></div>
+      <div class="grid" style="margin-top:1rem">
+        <div class="field">
+          <label>Logo (opcional)</label>
+          <div class="imgpick"><div class="prev" id="logoPrev">Sin logo</div>
+            <div class="ctrl"><input type="file" accept="image/*" id="logoFile"><button type="button" class="linkbtn" id="logoDel">Quitar logo</button></div></div>
+        </div>
+        <div class="field">
+          <label>Firma escaneada (opcional)</label>
+          <div class="imgpick"><div class="prev" id="firmaPrev">Sin firma</div>
+            <div class="ctrl"><input type="file" accept="image/*" id="firmaFile"><button type="button" class="linkbtn" id="firmaDel">Quitar firma</button></div></div>
+          <small>Ideal: PNG con fondo transparente.</small>
+        </div>
+      </div>
+    </div>
+    <div class="dlg-f">
+      <button type="button" class="btn ghost" id="profileCancel">Cancelar</button>
+      <button type="submit" class="btn" id="profileSave">Guardar datos</button>
+    </div>
+  </form>
+</dialog>
 
-    <script>
-        // --- Lógica del BANNER DINÁMICO ---
-        const slides = document.querySelectorAll('.slide');
-        let currentSlideIdx = 0;
-        const slideInterval = 5000; // Tiempo entre cambios (5 segundos)
+<div id="toast" role="status" aria-live="polite"></div>
 
-        function nextSlide() {
-            // Quitar clase activa a la imagen actual
-            slides[currentSlideIdx].classList.remove('active');
-            
-            // Calcular índice de la siguiente imagen
-            currentSlideIdx = (currentSlideIdx + 1) % slides.length;
-            
-            // Añadir clase activa a la nueva imagen
-            slides[currentSlideIdx].classList.add('active');
-        }
+<script>
+/* =========================================================
+   CONFIGURACIÓN
+   ========================================================= */
+const PROS = {
+  maury: {
+    defaults: { nombre:"Maury Navas", titulo:"Psicóloga", especialidad:"Psicología clínica", registro:"", telefono:"", email:"", direccion:"", ciudad:"" },
+    color:[36,86,107], soft:[220,232,236],
+    area:"psicológica", areaTitle:"Psicológica", areaM:"Psicológico",
+    servicio:"atención psicológica", inicial:"M"
+  },
+  wendy: {
+    defaults: { nombre:"Wendy Mendoza", titulo:"Terapeuta", especialidad:"Terapia", registro:"", telefono:"", email:"", direccion:"", ciudad:"" },
+    color:[122,59,92], soft:[240,225,232],
+    area:"terapéutica", areaTitle:"Terapéutica", areaM:"Terapéutico",
+    servicio:"atención terapéutica", inicial:"W"
+  }
+};
 
-        // Iniciar el cambio automático
-        setInterval(nextSlide, slideInterval);
+const ICONS = {
+  evaluacion:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3.5" width="14" height="18" rx="2"/><path d="M9 3.5h6v2.5H9z"/><path d="M8.5 11l1.5 1.5 3-3"/><path d="M8.5 16.5h7"/></svg>',
+  informe:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 12.5h7M8.5 16h7M8.5 9h3"/></svg>',
+  constancia:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="13" rx="2"/><path d="M7.5 9h9M7.5 12.5h5"/><circle cx="16.5" cy="16.5" r="2.5"/><path d="M15.3 18.6 14.8 21l1.7-.9 1.7.9-.5-2.4"/></svg>'
+};
 
+const DOCS = {
+  evaluacion: { title:p=>`Formato de Evaluación ${p.areaTitle}`, desc:"Primera valoración: datos del paciente, motivo de consulta, antecedentes, hallazgos y plan." },
+  informe:    { title:p=>`Informe ${p.areaM}`, desc:"Resumen del proceso para otro profesional, institución o familia: evolución, conclusiones y recomendaciones." },
+  constancia: { title:p=>`Constancia de Atención ${p.areaTitle}`, desc:"Documento breve que certifica que el paciente asiste o asistió a consulta." }
+};
 
-        // --- Lógica del MODAL ---
-        const modal = document.getElementById('registerModal');
-        const modalContent = modal.querySelector('div');
+/* ---- Campos por tipo de documento ---- */
+const F = (id,label,type="text",o={}) => ({ id, label, type, ...o });
+const SEXO = ["","Femenino","Masculino","Otro"];
 
-        function toggleModal() {
-            if (modal.classList.contains('hidden')) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                    modalContent.classList.remove('scale-95');
-                }, 10);
-            } else {
-                modal.classList.add('opacity-0');
-                modalContent.classList.add('scale-95');
-                setTimeout(() => {
-                    modal.classList.remove('flex');
-                    modal.classList.add('hidden');
-                }, 300);
-            }
-        }
+function getGroups(pro, doc){
+  const psi = pro === "maury";
+  const pacienteBase = [
+    F("paciente_nombre","Nombre completo del paciente","text",{req:true}),
+    F("paciente_doc","Documento de identidad"),
+    F("paciente_nac","Fecha de nacimiento","date"),
+    F("paciente_edad","Edad","text",{hint:"Se calcula al elegir la fecha de nacimiento."}),
+    F("paciente_sexo","Sexo","select",{options:SEXO}),
+  ];
+  const lugarFecha = [ F("ciudad","Ciudad"), F("fecha","Fecha del documento","date",{req:true}) ];
 
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) toggleModal();
-        });
+  if (doc === "evaluacion"){
+    const paciente = [...pacienteBase,
+      F("paciente_tel","Teléfono"),
+      F("paciente_ocup", psi ? "Escolaridad / ocupación" : "Escolaridad / ocupación"),
+      F("paciente_dir","Dirección","text",{full:true}),
+      F("acudiente","Acudiente o representante (si aplica)"),
+      F("remitido","Remitido por"),
+      ...lugarFecha ];
+    const contenido = psi ? [
+      F("motivo","Motivo de consulta","textarea"),
+      F("historia","Historia del problema actual","textarea"),
+      F("ant_personales","Antecedentes personales (médicos, psicológicos, escolares o laborales)","textarea"),
+      F("ant_familiares","Antecedentes familiares","textarea"),
+      F("examen_mental","Examen mental y observación conductual","textarea"),
+      F("pruebas","Pruebas o instrumentos aplicados","textarea",{rows:3}),
+      F("resultados","Resultados de la evaluación","textarea"),
+      F("diagnostico","Impresión diagnóstica","textarea",{rows:3}),
+      F("plan","Plan de intervención","textarea"),
+      F("recomendaciones","Recomendaciones","textarea"),
+    ] : [
+      F("motivo","Motivo de consulta","textarea"),
+      F("diag_medico","Diagnóstico médico de base","textarea",{rows:3}),
+      F("ant_medicos","Antecedentes médicos y del desarrollo","textarea"),
+      F("eval_funcional","Evaluación funcional (motora, sensorial, cognitiva, comunicación, actividades de la vida diaria)","textarea",{rows:6}),
+      F("instrumentos","Pruebas o instrumentos aplicados","textarea",{rows:3}),
+      F("hallazgos","Hallazgos principales","textarea"),
+      F("objetivos","Objetivos terapéuticos","textarea"),
+      F("plan","Plan de tratamiento (frecuencia y duración sugerida)","textarea"),
+      F("recomendaciones","Recomendaciones","textarea"),
+    ];
+    return [ {title:"Datos del paciente", fields:paciente}, {title:"Evaluación", fields:contenido} ];
+  }
 
-        function handleSubmit(event) {
-            event.preventDefault();
-            alert('¡Registro enviado con éxito al Team Élite! Bienvenidos a la minoría selecta.');
-            document.getElementById('eliteForm').reset();
-            toggleModal();
-        }
-    </script>
+  if (doc === "informe"){
+    const paciente = [...pacienteBase, F("acudiente","Acudiente o representante (si aplica)"), F("remitido","Remitido por"), ...lugarFecha];
+    const datos = [
+      F("dirigido","Dirigido a","text",{full:true, ph:"Ej.: Dr. Juan Pérez, Neuropediatría / Colegio San José / A quien corresponda"}),
+      F("periodo","Período de atención","text",{ph:"Ej.: marzo a septiembre de 2026"}),
+      F("sesiones","Número de sesiones","number"),
+    ];
+    const contenido = [
+      F("motivo","Motivo del informe o de la remisión","textarea"),
+      F("antecedentes","Antecedentes relevantes","textarea"),
+      F("metodologia","Metodología e instrumentos utilizados","textarea"),
+      psi ? F("resultados","Resultados y análisis","textarea",{rows:6}) : F("evolucion","Evolución y progreso del paciente","textarea",{rows:6}),
+      psi ? F("diagnostico","Impresión diagnóstica","textarea",{rows:3}) : F("estado","Estado actual","textarea",{rows:3}),
+      F("conclusiones","Conclusiones","textarea"),
+      F("recomendaciones","Recomendaciones","textarea"),
+    ];
+    return [ {title:"Datos del paciente", fields:paciente}, {title:"Datos del informe", fields:datos}, {title:"Contenido del informe", fields:contenido} ];
+  }
+
+  // constancia
+  return [
+    { title:"Datos del paciente", fields:[
+      F("paciente_nombre","Nombre completo del paciente","text",{req:true}),
+      F("paciente_doc","Documento de identidad","text",{req:true}),
+      F("paciente_edad","Edad (opcional)"),
+      F("acudiente","Acudiente o representante (si aplica)"),
+    ]},
+    { title:"Detalles de la atención", fields:[
+      F("estado","Estado del proceso","select",{options:["Actualmente en proceso","Proceso finalizado"]}),
+      F("modalidad","Modalidad","select",{options:["Presencial","Virtual","Presencial y virtual"]}),
+      F("fecha_inicio","Fecha de inicio de la atención","date",{req:true}),
+      F("fecha_fin","Fecha de finalización (si terminó)","date"),
+      F("frecuencia","Frecuencia","text",{ph:"Ej.: una (1) sesión semanal"}),
+      F("sesiones","Número de sesiones (opcional)","number"),
+      F("fines","Se expide para","text",{full:true, ph:"Ej.: ser presentada ante la institución educativa"}),
+      F("observaciones","Observaciones adicionales (opcional)","textarea",{rows:3}),
+      F("ciudad","Ciudad"),
+      F("fecha","Fecha de expedición","date",{req:true}),
+    ]}
+  ];
+}
+
+/* =========================================================
+   UTILIDADES
+   ========================================================= */
+const $ = (s,el=document)=>el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const store = {
+  get(k,d){ try{ const v=localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const todayISO = () => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
+function fmtDate(iso){
+  if(!iso) return "";
+  const [y,m,d] = iso.split("-").map(Number);
+  return `${d} de ${MESES[m-1]} de ${y}`;
+}
+function calcAge(iso){
+  if(!iso) return "";
+  const [y,m,d] = iso.split("-").map(Number);
+  const t = new Date();
+  let years = t.getFullYear()-y, months = (t.getMonth()+1)-m;
+  if (t.getDate() < d) months--;
+  if (months < 0){ years--; months += 12; }
+  if (years < 0) return "";
+  if (years < 3){
+    const ms = `${months} ${months===1?"mes":"meses"}`;
+    return years > 0 ? `${years} ${years===1?"año":"años"} y ${ms}` : ms;
+  }
+  return `${years} años`;
+}
+function toast(msg){
+  const t=$("#toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"), 2800);
+}
+function getProfile(pro){ return { ...PROS[pro].defaults, ...store.get(`perfil:${pro}`, {}) }; }
+
+/* =========================================================
+   VISTAS
+   ========================================================= */
+const app = $("#app");
+
+function viewHome(){
+  document.body.dataset.pro = "";
+  const m = getProfile("maury"), w = getProfile("wendy");
+  app.innerHTML = `
+    <div class="split">
+      <div class="intro">¿Quién va a crear el documento?</div>
+      <a class="half maury" href="#/maury">
+        <span class="mono" aria-hidden="true">M</span>
+        <p class="role">${esc(m.titulo)}</p>
+        <h1 class="name">${esc(m.nombre).replace(" ","<br>")}</h1>
+        <span class="go">Evaluaciones, informes y constancias</span>
+      </a>
+      <a class="half wendy" href="#/wendy">
+        <span class="mono" aria-hidden="true">W</span>
+        <p class="role">${esc(w.titulo)}</p>
+        <h1 class="name">${esc(w.nombre).replace(" ","<br>")}</h1>
+        <span class="go">Evaluaciones, informes y constancias</span>
+      </a>
+    </div>`;
+}
+
+function topbar(pro, backHref, backText){
+  const p = getProfile(pro);
+  return `<header class="top"><div class="top-in">
+    <a class="back" href="${backHref}">‹ ${esc(backText)}</a>
+    <span class="who">${esc(p.nombre)}, ${esc(p.titulo.toLowerCase())}</span>
+    <button class="btn light" type="button" data-action="perfil">Datos profesionales</button>
+  </div></header>`;
+}
+
+function viewPro(pro){
+  document.body.dataset.pro = pro;
+  const cfg = PROS[pro], p = getProfile(pro);
+  const rows = Object.keys(DOCS).map(k=>`
+    <li><a class="docrow" href="#/${pro}/${k}">
+      <span class="docicon">${ICONS[k]}</span>
+      <span><h2>${esc(DOCS[k].title(cfg))}</h2><p>${esc(DOCS[k].desc)}</p></span>
+      <span class="btn">Crear</span>
+    </a></li>`).join("");
+  const incompleto = !p.registro || !p.telefono;
+  app.innerHTML = `${topbar(pro,"#/","Cambiar profesional")}
+    <div class="wrap">
+      <h1 class="page">¿Qué documento necesitas?</h1>
+      <p class="lead">Llena el formulario y descarga el PDF listo para imprimir o enviar. Los datos se quedan solo en este navegador.</p>
+      <ul class="doclist">${rows}</ul>
+      ${incompleto ? `<div class="profilenote"><span>Completa tu registro profesional y teléfono para que aparezcan en los PDF.</span>
+        <button class="btn ghost" type="button" data-action="perfil">Completar datos</button></div>` : ""}
+    </div>`;
+}
+
+function fieldHTML(f, val){
+  const id = `f_${f.id}`;
+  const req = f.req ? ' <span class="req" aria-hidden="true">*</span>' : "";
+  const ph = f.ph ? ` placeholder="${esc(f.ph)}"` : "";
+  let input;
+  if (f.type === "textarea") input = `<textarea id="${id}" name="${f.id}" rows="${f.rows||4}"${ph}>${esc(val)}</textarea>`;
+  else if (f.type === "select") input = `<select id="${id}" name="${f.id}">${f.options.map(o=>`<option value="${esc(o)}"${o===val?" selected":""}>${o?esc(o):"Seleccionar…"}</option>`).join("")}</select>`;
+  else input = `<input type="${f.type}" id="${id}" name="${f.id}" value="${esc(val)}"${ph}${f.type==="number"?' min="0"':""}${f.req?" required":""}>`;
+  const full = (f.full || f.type==="textarea") ? " full" : "";
+  return `<div class="field${full}"><label for="${id}">${esc(f.label)}${req}</label>${input}${f.hint?`<small>${esc(f.hint)}</small>`:""}</div>`;
+}
+
+function viewForm(pro, doc){
+  document.body.dataset.pro = pro;
+  const cfg = PROS[pro], prof = getProfile(pro);
+  const groups = getGroups(pro, doc);
+  const draftKey = `borrador:${pro}:${doc}`;
+  const draft = store.get(draftKey, {});
+  const defaults = { fecha: todayISO(), ciudad: prof.ciudad };
+  const val = f => draft[f.id] ?? defaults[f.id] ?? (f.type==="select" ? f.options[0] : "");
+
+  app.innerHTML = `${topbar(pro,`#/${pro}`,"Documentos")}
+    <div class="wrap">
+      <h1 class="page">${esc(DOCS[doc].title(cfg))}</h1>
+      <p class="lead">Los campos con <span style="color:var(--accent)">*</span> son obligatorios. Los campos de texto vacíos no aparecen en el PDF.</p>
+      <form id="docForm" novalidate>
+        ${groups.map(g=>`<section class="sheet"><h2>${esc(g.title)}</h2><div class="grid">${g.fields.map(f=>fieldHTML(f,val(f))).join("")}</div></section>`).join("")}
+      </form>
+    </div>
+    <div class="actions"><div class="actions-in">
+      <span class="saved" id="savedNote">El borrador se guarda solo en este navegador.</span>
+      <button class="btn plain" type="button" id="btnClear">Vaciar formulario</button>
+      <button class="btn ghost" type="button" id="btnPreview">Ver PDF</button>
+      <button class="btn" type="button" id="btnDownload">Descargar PDF</button>
+    </div></div>`;
+
+  const form = $("#docForm");
+  const all = groups.flatMap(g=>g.fields);
+  const collect = () => Object.fromEntries(all.map(f=>[f.id, (form.elements[f.id]?.value ?? "").trim()]));
+
+  let t;
+  form.addEventListener("input", e=>{
+    e.target.classList.remove("invalid");
+    if (e.target.name === "paciente_nac" && form.elements.paciente_edad){
+      form.elements.paciente_edad.value = calcAge(e.target.value);
+    }
+    clearTimeout(t);
+    t = setTimeout(()=>{ if(store.set(draftKey, collect())) $("#savedNote").textContent = "Borrador guardado en este navegador."; }, 400);
+  });
+
+  const validate = () => {
+    const bad = all.filter(f=>f.req && !(form.elements[f.id].value||"").trim());
+    bad.forEach(f=>form.elements[f.id].classList.add("invalid"));
+    if (bad.length){ form.elements[bad[0].id].focus(); toast(`Falta llenar: ${bad.map(f=>f.label).join(", ")}.`); return false; }
+    return true;
+  };
+  const make = () => {
+    if (!window.jspdf){ toast("No se pudo cargar el generador de PDF. Revisa tu conexión a internet y recarga la página."); return null; }
+    return buildPDF(pro, doc, collect(), groups);
+  };
+
+  $("#btnDownload").onclick = () => {
+    if(!validate()) return; const r = make(); if(!r) return;
+    r.pdf.save(r.filename); toast("PDF descargado.");
+  };
+  $("#btnPreview").onclick = () => {
+    if(!validate()) return; const r = make(); if(!r) return;
+    const w = window.open(r.pdf.output("bloburl"), "_blank");
+    if(!w) toast("El navegador bloqueó la ventana. Permite ventanas emergentes para ver el PDF.");
+  };
+  $("#btnClear").onclick = () => {
+    if (!confirm("¿Vaciar todos los campos de este formulario?")) return;
+    store.del(draftKey); viewForm(pro, doc); window.scrollTo(0,0); toast("Formulario vacío.");
+  };
+}
+
+/* =========================================================
+   GENERADOR DE PDF
+   ========================================================= */
+function buildPDF(pro, docKey, data, groups){
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ unit:"mm", format:"letter" });
+  const cfg = PROS[pro], prof = getProfile(pro);
+  const W = 215.9, H = 279.4, M = 20, CW = W - 2*M;
+  const C = cfg.color, SOFT = cfg.soft, DARK = [35,40,42], GRAY = [110,118,120];
+  const title = DOCS[docKey].title(cfg);
+  let y = 0;
+
+  const imgFmt = d => d.startsWith("data:image/png") ? "PNG" : "JPEG";
+
+  function header(){
+    let x = M;
+    if (prof.logo){
+      try{
+        const ip = pdf.getImageProperties(prof.logo); const h = 22, w = Math.min(34, h*ip.width/ip.height);
+        pdf.addImage(prof.logo, imgFmt(prof.logo), M, 11, w, h); x = M + w + 5;
+      }catch(e){}
+    }
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(15); pdf.setTextColor(...C);
+    pdf.text(prof.nombre, x, 17.5);
+    pdf.setFont("helvetica","normal"); pdf.setFontSize(9.5); pdf.setTextColor(...GRAY);
+    const l2 = [prof.titulo, prof.especialidad].filter(Boolean).join(" - ");
+    const l3 = [prof.registro && `Registro profesional: ${prof.registro}`, prof.telefono && `Tel.: ${prof.telefono}`, prof.email].filter(Boolean).join("   |   ");
+    let ly = 23; if (l2){ pdf.text(l2, x, ly); ly += 4.6; }
+    if (l3){ pdf.text(l3, x, ly); ly += 4.6; }
+    if (prof.direccion){ pdf.text(prof.direccion, x, ly); }
+    pdf.setDrawColor(...C); pdf.setLineWidth(0.6); pdf.line(M, 37, W-M, 37);
+    y = 46;
+  }
+  function ensure(h){ if (y + h > H - 22){ pdf.addPage(); header(); } }
+
+  function heading(text){
+    ensure(22);
+    pdf.setFillColor(...SOFT); pdf.rect(M, y, CW, 7.5, "F");
+    pdf.setFillColor(...C); pdf.rect(M, y, 1.3, 7.5, "F");
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(10.5); pdf.setTextColor(...C);
+    pdf.text(text, M+4, y+5.1);
+    y += 13;
+  }
+  function paragraph(text, size=10.5, lh=5.3){
+    pdf.setFont("helvetica","normal"); pdf.setFontSize(size); pdf.setTextColor(...DARK);
+    const lines = pdf.splitTextToSize(text, CW);
+    for (const line of lines){ ensure(lh); pdf.text(line, M, y); y += lh; }
+    y += 4;
+  }
+  function table(items){
+    const colW = CW/2, rows = [];
+    let pend = null;
+    for (const it of items){
+      if (it.full){ if(pend){ rows.push([pend]); pend=null; } rows.push([it]); }
+      else if (pend){ rows.push([pend, it]); pend = null; }
+      else pend = it;
+    }
+    if (pend) rows.push([pend]);
+    pdf.setDrawColor(205,212,212); pdf.setLineWidth(0.25);
+    for (const row of rows){
+      const wOf = c => (row.length===1 ? CW : colW);
+      pdf.setFontSize(10);
+      const wrapped = row.map(c => pdf.splitTextToSize(c.value, wOf(c)-5));
+      const h = 7 + Math.max(...wrapped.map(w=>w.length))*4.6 + 1.5;
+      ensure(h);
+      row.forEach((c,i)=>{
+        const x = M + i*colW, w = wOf(c);
+        pdf.rect(x, y, w, h, "S");
+        pdf.setFont("helvetica","normal"); pdf.setFontSize(7.8); pdf.setTextColor(...GRAY);
+        pdf.text(c.label, x+2.5, y+4.2);
+        pdf.setFontSize(10); pdf.setTextColor(...DARK);
+        pdf.text(wrapped[i], x+2.5, y+9, { lineHeightFactor:1.3 });
+      });
+      y += h;
+    }
+    y += 7;
+  }
+  function signature(){
+    ensure(50);
+    y += 14;
+    const cx = W/2;
+    if (prof.firma){
+      try{
+        const ip = pdf.getImageProperties(prof.firma); const h = 18, w = Math.min(60, h*ip.width/ip.height);
+        pdf.addImage(prof.firma, imgFmt(prof.firma), cx-w/2, y, w, h); y += h + 1;
+      }catch(e){ y += 18; }
+    } else y += 18;
+    pdf.setDrawColor(...DARK); pdf.setLineWidth(0.3); pdf.line(cx-38, y, cx+38, y); y += 5;
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(10.5); pdf.setTextColor(...DARK);
+    pdf.text(prof.nombre, cx, y, {align:"center"}); y += 4.8;
+    pdf.setFont("helvetica","normal"); pdf.setFontSize(9.5); pdf.setTextColor(...GRAY);
+    pdf.text(prof.titulo, cx, y, {align:"center"}); y += 4.5;
+    if (prof.registro){ pdf.text(`Registro profesional: ${prof.registro}`, cx, y, {align:"center"}); y += 4.5; }
+  }
+  function placeDate(){
+    pdf.setFont("helvetica","normal"); pdf.setFontSize(10); pdf.setTextColor(...DARK);
+    pdf.text(`${data.ciudad ? data.ciudad + ", " : ""}${fmtDate(data.fecha)}`, W-M, y, {align:"right"});
+    y += 11;
+  }
+  function docTitle(){
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(14.5); pdf.setTextColor(...C);
+    pdf.text(title.toUpperCase(), W/2, y, {align:"center"});
+    y += 11;
+  }
+
+  header();
+
+  if (docKey === "constancia"){
+    placeDate(); y += 4; docTitle(); y += 6;
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(11); pdf.setTextColor(...DARK);
+    pdf.text("A quien pueda interesar:", M, y); y += 10;
+
+    const enProceso = data.estado !== "Proceso finalizado";
+    const suscrita = `La suscrita, ${prof.nombre}, ${prof.titulo.toLowerCase()}${prof.registro ? `, con registro profesional N° ${prof.registro}` : ""}`;
+    let p1 = `${suscrita}, hace constar que ${data.paciente_nombre}, identificado(a) con documento N° ${data.paciente_doc}`;
+    if (data.paciente_edad) p1 += `, de ${data.paciente_edad} de edad`;
+    if (data.acudiente) p1 += `, representado(a) por ${data.acudiente}`;
+    p1 += enProceso ? `, se encuentra en ${cfg.servicio}` : `, recibió ${cfg.servicio}`;
+    p1 += ` en modalidad ${data.modalidad.toLowerCase()} desde el ${fmtDate(data.fecha_inicio)}`;
+    if (data.fecha_fin) p1 += ` hasta el ${fmtDate(data.fecha_fin)}`;
+    if (data.frecuencia) p1 += `, con una frecuencia de ${data.frecuencia}`;
+    if (data.sesiones) p1 += `, completando a la fecha un total de ${data.sesiones} ${Number(data.sesiones)===1?"sesión":"sesiones"}`;
+    p1 += enProceso ? ". Actualmente el proceso continúa activo." : ". El proceso se encuentra finalizado.";
+    paragraph(p1, 11, 6.2);
+    if (data.observaciones) paragraph(data.observaciones, 11, 6.2);
+    const [yy,mm,dd] = (data.fecha||todayISO()).split("-").map(Number);
+    let p3 = `La presente constancia se expide a solicitud de la parte interesada${data.fines ? `, para ${data.fines}` : ""}`;
+    p3 += `${data.ciudad ? `, en la ciudad de ${data.ciudad}` : ""}, a los ${dd} días del mes de ${MESES[mm-1]} de ${yy}.`;
+    paragraph(p3, 11, 6.2);
+    y += 4;
+    pdf.setFontSize(11); pdf.setTextColor(...DARK); pdf.text("Atentamente,", M, y);
+    signature();
+  } else {
+    placeDate(); docTitle();
+    if (data.dirigido){
+      pdf.setFont("helvetica","bold"); pdf.setFontSize(10.5); pdf.setTextColor(...DARK);
+      const lines = pdf.splitTextToSize(`Dirigido a: ${data.dirigido}`, CW);
+      pdf.text(lines, M, y); y += lines.length*5.3 + 4;
+    }
+    const skip = new Set(["fecha","ciudad","dirigido"]);
+    const all = groups.flatMap(g=>g.fields);
+    const info = all.filter(f=>f.type!=="textarea" && !skip.has(f.id) && data[f.id])
+      .map(f=>({ label:f.label.replace(/\s*\(.*?\)\s*/g,""), value: f.type==="date" ? fmtDate(data[f.id]) : data[f.id], full:f.full }));
+    heading("Datos del paciente");
+    table(info);
+    all.filter(f=>f.type==="textarea" && data[f.id]).forEach(f=>{ heading(f.label); paragraph(data[f.id]); });
+    signature();
+  }
+
+  // Pie de página
+  const n = pdf.getNumberOfPages();
+  for (let i=1;i<=n;i++){
+    pdf.setPage(i);
+    pdf.setDrawColor(215,220,220); pdf.setLineWidth(0.25); pdf.line(M, H-15, W-M, H-15);
+    pdf.setFont("helvetica","normal"); pdf.setFontSize(8); pdf.setTextColor(...GRAY);
+    pdf.text(`${title} - ${data.paciente_nombre}`, M, H-10);
+    pdf.text(`Página ${i} de ${n}`, W-M, H-10, {align:"right"});
+  }
+
+  const clean = s => (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9]+/g,"_").replace(/^_|_$/g,"");
+  const filename = `${clean(title)}_${clean(data.paciente_nombre)}_${data.fecha||todayISO()}.pdf`;
+  return { pdf, filename };
+}
+
+/* =========================================================
+   PERFIL PROFESIONAL
+   ========================================================= */
+const dlg = $("#profileDlg");
+const PROFILE_FIELDS = [
+  F("nombre","Nombre completo","text",{req:true}), F("titulo","Profesión (aparece bajo la firma)"),
+  F("especialidad","Especialidad"), F("registro","Registro / matrícula profesional"),
+  F("telefono","Teléfono"), F("email","Correo electrónico","email"),
+  F("direccion","Dirección del consultorio","text",{full:true}), F("ciudad","Ciudad (se usa por defecto en los documentos)"),
+];
+let editing = null, tmpImgs = {};
+
+function setPrev(kind){
+  const el = $(`#${kind}Prev`), v = tmpImgs[kind];
+  el.innerHTML = v ? `<img src="${v}" alt="">` : (kind==="logo" ? "Sin logo" : "Sin firma");
+}
+function openProfile(pro){
+  editing = pro; const p = getProfile(pro);
+  tmpImgs = { logo:p.logo||"", firma:p.firma||"" };
+  $("#profileFields").innerHTML = PROFILE_FIELDS.map(f=>fieldHTML(f, p[f.id]||"")).join("");
+  setPrev("logo"); setPrev("firma");
+  $("#logoFile").value = ""; $("#firmaFile").value = "";
+  dlg.showModal();
+}
+function readImage(file){
+  return new Promise((res,rej)=>{
+    const r = new FileReader();
+    r.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 700, s = Math.min(1, max/Math.max(img.width,img.height));
+        const c = document.createElement("canvas"); c.width = Math.round(img.width*s); c.height = Math.round(img.height*s);
+        c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+        res(c.toDataURL("image/png"));
+      };
+      img.onerror = rej; img.src = r.result;
+    };
+    r.onerror = rej; r.readAsDataURL(file);
+  });
+}
+["logo","firma"].forEach(k=>{
+  $(`#${k}File`).addEventListener("change", async e=>{
+    const f = e.target.files[0]; if(!f) return;
+    try{ tmpImgs[k] = await readImage(f); setPrev(k); }catch(err){ toast("No se pudo leer la imagen. Prueba con un archivo PNG o JPG."); }
+  });
+  $(`#${k}Del`).onclick = () => { tmpImgs[k] = ""; $(`#${k}File`).value=""; setPrev(k); };
+});
+$("#profileCancel").onclick = () => dlg.close();
+$("#profileForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  const fm = e.target, data = {};
+  PROFILE_FIELDS.forEach(f=> data[f.id] = (fm.elements[f.id].value||"").trim());
+  if (!data.nombre){ fm.elements.nombre.classList.add("invalid"); fm.elements.nombre.focus(); return; }
+  data.logo = tmpImgs.logo; data.firma = tmpImgs.firma;
+  if (!store.set(`perfil:${editing}`, data)){ toast("No se pudo guardar: las imágenes son muy pesadas. Usa archivos más livianos."); return; }
+  dlg.close(); toast("Datos guardados."); route();
+});
+
+document.addEventListener("click", e=>{
+  const b = e.target.closest('[data-action="perfil"]');
+  if (b && document.body.dataset.pro) openProfile(document.body.dataset.pro);
+});
+
+/* =========================================================
+   RUTAS
+   ========================================================= */
+function route(){
+  const [pro, doc] = location.hash.replace(/^#\/?/,"").split("/").filter(Boolean);
+  if (pro && PROS[pro]){
+    if (doc && DOCS[doc]) return viewForm(pro, doc);
+    return viewPro(pro);
+  }
+  viewHome();
+}
+window.addEventListener("hashchange", ()=>{ route(); window.scrollTo(0,0); });
+route();
+</script>
 </body>
 </html>
