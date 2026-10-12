@@ -597,8 +597,10 @@ function buildPDF(pro, docKey, data, groups){
     pdf.text(`Página ${i} de ${n}`, W-M, H-10, {align:"right"});
   }
 
-  const clean = s => (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9]+/g,"_").replace(/^_|_$/g,"");
-  const filename = `${clean(title)}_${clean(data.paciente_nombre)}_${data.fecha||todayISO()}.pdf`;
+  // Nombre del archivo: "Nombre del Paciente - Tipo de documento - fecha.pdf"
+  const clean = s => (s||"").replace(/[\\/:*?"<>|]+/g," ").replace(/\s+/g," ").trim();
+  const paciente = clean(data.paciente_nombre).split(" ").map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(" ");
+  const filename = `${paciente} - ${clean(title)} - ${data.fecha||todayISO()}.pdf`;
   return { pdf, filename };
 }
 
